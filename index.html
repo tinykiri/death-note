@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Death Note</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Mobile View -->
+    <div id="mobileBlocker" class="mobile-blocker">
+        <div class="mobile-blocker-content">
+            <img src="Ryuk.webp" alt="Ryuk" class="ryuk-image">
+             <img src="maxresdefault.jpg" alt="Ryuk" class="mobile-title-image">
+            <p class="mobile-message">This Death Note can only be accessed on desktop</p>
+            <p class="mobile-submessage">Humans who use mobile devices cannot write names in this notebook</p>
+        </div>
+    </div>
+
+    <!-- Desktop View -->
+    <div class="scene">
+        <div id="book" class="book closed">
+
+            <!-- Front Cover -->
+            <div class="cover front-cover" onclick="openBook()">
+                <div class="cover-content">
+                    <img src="maxresdefault.jpg" alt="DEATH NOTE" class="title-image">
+                </div>
+            </div>
+            
+            <!-- Pages -->
+            <div class="pages-container" id="pagesContainer">
+
+                <!-- First spread (inside cover + page 1) -->
+                <div class="spread" data-spread="1">
+                    <div class="page inside-cover">
+                        <div class="inside-cover-content">
+                            <!-- Empty black page - no title -->
+                        </div>
+                    </div>
+                    <div class="page right-page">
+                        <div class="page-content">
+                            <div class="page-lines"></div>
+                            <textarea class="page-textarea" data-page="1"></textarea>
+                        </div>
+                        <div class="page-number">1</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back Cover -->
+            <div class="cover back-cover">
+                <div class="cover-content"></div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div id="controls" class="controls hidden">
+            <button onclick="navigateSpread(-1)" class="nav-btn">← Previous</button>
+            <span id="pageIndicator">Cover - Page 1</span>
+            <button onclick="navigateSpread(1)" class="nav-btn">Next →</button>
+            <button onclick="closeBook()" class="close-btn">Close</button>
+        </div>
+    </div>
+    
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+* {
+	margin: 0;
+ 	padding: 0;
+ 	box-sizing: border-box;
+}
+
+html, body {
+ 	width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: radial-gradient(ellipse at center, #2a2a2a 0%, #000000 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Courier New', monospace;
+  perspective: 3000px;
+}
+
+/* Mobile Blocker */
+.mobile-blocker {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.mobile-blocker-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+  padding: 20px;
+  max-width: 100%;
+	text-align: center;
+}
+
+.ryuk-image {
+  width: 200px;
+  max-width: 80%;
+  height: auto;
+  margin-bottom: 30px;
+  filter: brightness(0.8) contrast(1.2);
+  animation: floatRyuk 6s ease-in-out infinite;
+}
+
+.mobile-title-image {
+  width: 300px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Floating Ryuk */
+@keyframes floatRyuk {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.mobile-title {
+  color: #fff;
+  font-size: 3em;
+  margin-bottom: 20px;
+  text-shadow: 
+    0 0 10px rgba(255, 0, 0, 0.5),
+    0 0 20px rgba(255, 0, 0, 0.3),
+    0 0 30px rgba(255, 0, 0, 0.1);
+  font-family: 'Times New Roman', serif;
+  letter-spacing: 5px;
+}
+
+.mobile-message {
+  color: #ccc;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  font-family: 'Courier New', monospace;
+}
+
+.mobile-submessage {
+  color: #666;
+  font-size: 0.9em;
+  font-style: italic;
+  font-family: 'Courier New', monospace;
+}
+
+/* Show mobile blocker on mobile devices */
+@media (max-width: 1024px), (pointer: coarse) {
+  .mobile-blocker {
+    display: flex !important;
+  }
+  
+  .scene {
+    display: none !important;
+  }
+}
+
+/* Additional check for touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .mobile-blocker {
+    display: flex !important;
+  }
+  
+  .scene {
+    display: none !important;
+  }
+}
+
+/* Desktop Only */
+.scene {
+  position: relative;
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.book {
+  position: relative;
+  width: 90vw;
+  max-width: 1400px;
+  height: 80vh;
+  max-height: 900px;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+.book.closed {
+  transform: rotateY(0deg);
+}
+
+.book.open {
+  transform: translateX(-2%);
+}
+
+.cover {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background: #000;
+  transform-style: preserve-3d;
+  transition: transform 1.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+  cursor: pointer;
+  border-radius: 0 10px 10px 0;
+}
+
+.front-cover {
+  box-shadow: 
+    inset 0 0 100px rgba(0, 0, 0, 0.8),
+    inset 2px 0 10px rgba(0, 0, 0, 0.9),
+    0 10px 50px rgba(0, 0, 0, 0.9);
+  z-index: 10;
+  transform-origin: left center;
+  border: 3px solid #1a1a1a;
+  right: 0;
+}
+
+.front-cover.opening {
+  transform: rotateY(-180deg);
+  z-index: 0;
+}
+
+.back-cover {
+  background: linear-gradient(135deg, #0a0a0a 0%, #000000 50%, #1a1a1a 100%);
+  transform: translateZ(-30px);
+  box-shadow: 
+    inset 0 0 100px rgba(0, 0, 0, 0.8),
+    0 10px 50px rgba(0, 0, 0, 0.9);
+  border: 3px solid #1a1a1a;
+  right: 0;
+}
+
+.cover-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cover image styling */
+.title-image {
+  width: 80%;
+  height: auto;
+  max-height: 60%;
+  object-fit: contain;
+}
+
+.cover-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(255, 255, 255, 0.01) 3px,
+      rgba(255, 255, 255, 0.01) 6px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(255, 255, 255, 0.01) 3px,
+      rgba(255, 255, 255, 0.01) 6px
+    );
+  pointer-events: none;
+}
+
+/* Pages Container */
+.pages-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  transform-style: preserve-3d;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.pages-container.visible {
+  opacity: 1;
+}
+
+/* Two pages side by side */
+.spread {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: none;
+  transform-style: preserve-3d;
+}
+
+.spread.active {
+  display: flex;
+}
+
+/* Individual Pages */
+.page {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, #fdfcf8 0%, #fff 10%, #fdfcf8 100%);
+  position: relative;
+  box-shadow: 
+    0 0 30px rgba(0, 0, 0, 0.2),
+    inset 0 0 50px rgba(0, 0, 0, 0.05);
+}
+
+/* Inside Cover - Black Left Page */
+.inside-cover {
+  background: #000;
+  background: linear-gradient(135deg, #0a0a0a 0%, #000000 50%, #1a1a1a 100%);
+  box-shadow: 
+    inset -20px 0 40px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inside-cover-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 3px solid #1a1a1a;
+	border-radius:  10px 0 0 10px;
+}
+
+/* Add texture to inside cover */
+.inside-cover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(255, 255, 255, 0.01) 3px,
+      rgba(255, 255, 255, 0.01) 6px
+    );
+  pointer-events: none;
+}
+
+.left-page {
+  border-right: 2px solid #e0e0e0;
+  box-shadow: 
+    inset -20px 0 40px rgba(0, 0, 0, 0.1),
+    0 0 30px rgba(0, 0, 0, 0.1);
+	border-radius: 10px 0 0 10px;
+}
+
+.right-page {
+  box-shadow: 
+    inset 20px 0 40px rgba(0, 0, 0, 0.1),
+    0 0 30px rgba(0, 0, 0, 0.1);
+	border-radius: 0 10px 10px 0;	
+
+}
+
+/* Page Content */
+.page-content {
+  width: 100%;
+  height: 100%;
+  padding: 80px 60px;
+  position: relative;
+}
+
+/* Page Lines */
+.page-lines {
+  position: absolute;
+  top: 80px;
+  left: 60px;
+  right: 60px;
+  bottom: 80px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 35px,
+    #d0d0d0 35px,
+    #d0d0d0 36px
+  );
+  pointer-events: none;
+}
+
+/* Textarea */
+.page-textarea {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: 'Courier New', monospace;
+  font-size: 22px;
+  line-height: 36px;
+  color: #222;
+  z-index: 2;
+  position: relative;
+}
+
+/* Page Numbers */
+.page-number {
+  position: absolute;
+  bottom: 40px;
+  font-size: 18px;
+  color: #888;
+}
+
+.left-page .page-number {
+  left: 60px;
+}
+
+.right-page .page-number {
+  right: 60px;
+}
+
+/* Controls */
+.controls {
+	width: 640px;
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  align-items: center;
+	justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 15px 30px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+.controls.hidden {
+  display: none;
+}
+
+.nav-btn, .close-btn {
+  padding: 12px 24px;
+  background: #222;
+  color: #fff;
+  border: 2px solid #444;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.nav-btn:hover, .close-btn:hover {
+  background: #444;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.nav-btn:disabled:hover {
+  transform: none;
+  background: #222;
+}
+
+#pageIndicator {
+  color: #fff;
+  font-size: 18px;
+  min-width: 150px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.close-btn {
+  background: #8b0000;
+  border-color: #a00;
+}
+
+.close-btn:hover {
+  background: #a00;
+}
+
+/* Hover effect on closed book */
+.book.closed .front-cover:hover {
+  box-shadow: 
+  inset 0 0 100px rgba(255, 255, 255, 0.1),
+  0 10px 60px rgba(0, 0, 0, 0.95);
+}
+
+.book.closed .front-cover:hover .title {
+  text-shadow: 
+  0 0 50px rgba(255, 255, 255, 1),
+  0 0 100px rgba(255, 255, 255, 0.8),
+  3px 3px 6px rgba(0, 0, 0, 1);
+}
+
+/* Book's spine */
+.book::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(to right, #000, #333, #000);
+  transform: translateX(-50%) translateZ(-15px);
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.book.open::before {
+  opacity: 1;
+}
